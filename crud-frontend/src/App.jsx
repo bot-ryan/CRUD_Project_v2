@@ -28,7 +28,7 @@ function App() {
 	return (
 		<>
 			<NavBar onOpen={() => handleModal('add')} />
-			<TableList />
+			<TableList onOpen={() => handleModal('edit')} />
 			<ModalForm isOpen={isOpen} 
 			onClose={() => setisOpen(false)} 
 			onSubmit={handleSubmit} 

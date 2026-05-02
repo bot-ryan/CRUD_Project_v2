@@ -1,4 +1,4 @@
-const TableList = () => {
+const TableList = ({ onOpen }) => {
 
     const clients = [
         {
@@ -54,7 +54,7 @@ const TableList = () => {
                     )}
                   </td>
                   <td>
-                    <button className="btn btn-secondary btn-sm">Edit</button>
+                    <button className="btn btn-secondary btn-sm" onClick={onOpen}>Edit</button>
                   </td>
                    <td>
                     <button className="btn btn-error btn-sm">Delete</button>
