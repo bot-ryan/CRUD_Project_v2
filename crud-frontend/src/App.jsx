@@ -1,7 +1,13 @@
-import Navbar from "./components/Navbar";
+import NavBar from "./components/NavBar";
+import TableList from "./components/TableList";
 
 function App() {
-	return <Navbar />;
+	return (
+		<>
+			<NavBar />
+			<TableList />
+		</>
+	);
 }
 
 export default App;
