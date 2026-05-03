@@ -21,6 +21,10 @@ const ModalForm = ({ isOpen, onClose, onSubmit, mode }) => {
   const[salary,setSalary] = useState("");
   const[status,setStatus] = useState("");
 
+
+
+  
+
   return (
     <>
       <dialog id="my_modal" className="modal" open={isOpen}>
@@ -68,11 +72,11 @@ const ModalForm = ({ isOpen, onClose, onSubmit, mode }) => {
                 <p className="label">Optional</p>
                 <legend className="fieldset-legend">Status</legend>
                 <select className="select w-full" value={status} onChange={(e) => setStatus(e.target.value)}>
-                  <option disabled selected>
+                  <option disabled value="" selected>
                     Select status
                   </option>
-                  <option>Active</option>
-                  <option>Inactive</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
                 </select>
               </fieldset>
             ) : (
@@ -82,7 +86,7 @@ const ModalForm = ({ isOpen, onClose, onSubmit, mode }) => {
           <button
             className="btn"
             onClick={() => {
-              onSubmit();
+              onSubmit({ name, job, salary, status: status === "Active" });
               onClose();
             }}
           >

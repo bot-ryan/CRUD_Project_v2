@@ -13,11 +13,15 @@ function App() {
 		setisOpen(!isOpen);
 	}
 
-	const handleSubmit = () => {
+	const handleSubmit = (e) => {
 		// handle form submission here
 		if(modalMode === "add"){
 			// add new client
-			console.log("Adding new client...");
+			console.log("Adding new client...", e);
+			console.log("Name: ", e.name);
+			console.log("Job: ", e.job);
+			console.log("Salary: ", e.salary);
+			console.log("Status: ", e.status);
 		} else if(modalMode === "edit"){
 			// edit existing client
 			console.log("Editing existing client...");
