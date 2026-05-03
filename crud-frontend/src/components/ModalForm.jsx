@@ -1,12 +1,30 @@
+import { useEffect } from "react";
+
 const ModalForm = ({ isOpen, onClose, onSubmit, mode }) => {
+  // Listen for ESC key
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    if (isOpen) {
+      window.addEventListener("keydown", handleEsc);
+    }
+
+    // Cleanup listener when modal closes
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [isOpen, onClose]);
+
   return (
     <>
-
       <dialog id="my_modal" className="modal" open={isOpen}>
         <div className="modal-box">
           {/* X button to close */}
           <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={onClose}>
+            <button
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+              onClick={onClose}
+            >
               ✕
             </button>
           </form>
@@ -14,19 +32,50 @@ const ModalForm = ({ isOpen, onClose, onSubmit, mode }) => {
           <h3 className="font-bold text-lg">
             {mode === "add" ? "Add New Client" : "Edit Client"}
           </h3>
-          <p className="py-4">Press ESC, click ✕, or click outside to close</p>
-          <button className="btn" onClick={() => {
-            onSubmit();
-            onClose();
-          }}>
+          <p className="py-4">
+            {mode === "add" ? (
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Name</legend>
+                <input type="text" className="input" placeholder="John Doe" />
+                <legend className="fieldset-legend">Job</legend>
+                <input type="text" className="input" placeholder="Teacher" />
+                <legend className="fieldset-legend">Salary</legend>
+                <input
+                  type="number"
+                  className="input"
+                  placeholder="10000"
+                />
+                <p className="label">Optional</p>
+                <legend className="fieldset-legend">Status</legend>
+                <select className="select w-full">
+                  <option disabled selected>
+                    Select status
+                  </option>
+                  <option>Active</option>
+                  <option>Inactive</option>
+                </select>
+              </fieldset>
+            ) : (
+              "Edit the client's information below."
+            )}
+          </p>
+          <button
+            className="btn"
+            onClick={() => {
+              onSubmit();
+              onClose();
+            }}
+          >
             {mode === "add" ? "Add Client" : "Save Changes"}
           </button>
         </div>
 
         {/* Click outside to close */}
-        <form method="dialog" className="modal-backdrop" onClick={onClose}>
-         
-        </form>
+        <form
+          method="dialog"
+          className="modal-backdrop"
+          onClick={onClose}
+        ></form>
       </dialog>
     </>
   );
