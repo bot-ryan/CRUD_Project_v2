@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 
 const ModalForm = ({ isOpen, onClose, onSubmit, mode }) => {
   // Listen for ESC key
@@ -14,6 +15,11 @@ const ModalForm = ({ isOpen, onClose, onSubmit, mode }) => {
     // Cleanup listener when modal closes
     return () => window.removeEventListener("keydown", handleEsc);
   }, [isOpen, onClose]);
+
+  const[name,setName] = useState("");
+  const[job,setJob] = useState("");
+  const[salary,setSalary] = useState("");
+  const[status,setStatus] = useState("");
 
   return (
     <>
@@ -36,18 +42,32 @@ const ModalForm = ({ isOpen, onClose, onSubmit, mode }) => {
             {mode === "add" ? (
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">Name</legend>
-                <input type="text" className="input" placeholder="John Doe" />
+                <input
+                  type="text"
+                  className="input"
+                  placeholder="John Doe"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
                 <legend className="fieldset-legend">Job</legend>
-                <input type="text" className="input" placeholder="Teacher" />
+                <input
+                  type="text"
+                  className="input"
+                  placeholder="Teacher"
+                  value={job}
+                  onChange={(e) => setJob(e.target.value)}
+                />
                 <legend className="fieldset-legend">Salary</legend>
                 <input
                   type="number"
                   className="input"
                   placeholder="10000"
+                  value={salary}
+                  onChange={(e) => setSalary(e.target.value)}
                 />
                 <p className="label">Optional</p>
                 <legend className="fieldset-legend">Status</legend>
-                <select className="select w-full">
+                <select className="select w-full" value={status} onChange={(e) => setStatus(e.target.value)}>
                   <option disabled selected>
                     Select status
                   </option>
