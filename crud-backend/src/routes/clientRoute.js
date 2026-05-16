@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { sayHello } from "../controllers/clientController.js";
+import * as clientController from "../controllers/clientController.js";
 
-const router = Router();
+const router = express.Router();
 
-router.get("/", sayHello);
+router.get("/clients", clientController.getClients);
 
 export default router;
