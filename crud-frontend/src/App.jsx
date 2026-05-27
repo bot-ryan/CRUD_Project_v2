@@ -9,24 +9,41 @@ function App() {
 	const [isOpen, setisOpen] = useState(false);
 	const [modalMode, setmodalMode] = useState("add");
 	const [searchTerm, setSearchTerm] = useState("");
+	const [clientData, setClientData] = useState(null); //name, job, salary, status
 
-	const handleModal = (mode) => {
+	
+
+	const handleModal = (mode, clientData = null) => {
 		setmodalMode(mode);
+		setClientData(clientData);
 		setisOpen(!isOpen);
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async(newClientData) => {
 		// handle form submission here
 		if(modalMode === "add"){
+
+			try{
+				const response = await axios.post("http://localhost:3000/api/clients", newClientData);
+				console.log("Client added successfully:", response.data);
+			}catch(err){
+				console.error("Error adding client:", err);
+			}
 			// add new client
-			console.log("Adding new client...", e);
-			console.log("Name: ", e.name);
-			console.log("Job: ", e.job);
-			console.log("Salary: ", e.salary);
-			console.log("Status: ", e.status);
+			console.log("Adding new client...", newClientData);
+			console.log("Name: ", newClientData.name);
+			console.log("Job: ", newClientData.job);
+			console.log("Salary: ", newClientData.salary);
+			console.log("Status: ", newClientData.isactive);
 		} else if(modalMode === "edit"){
 			// edit existing client
-			console.log("Editing existing client...");
+			console.log("Editing existing client...", newClientData);
+			try{
+				const response = await axios.put(`http://localhost:3000/api/clients/${clientData.id}`, newClientData);
+				console.log("Client updated successfully:", response.data);
+			}catch(err){
+				console.error("Error editing client:", err);
+			}
 		}
 	}
 
@@ -34,11 +51,14 @@ function App() {
 	return (
 		<>
 			<NavBar onOpen={() => handleModal('add')} onSearch={setSearchTerm} />
-			<TableList onOpen={() => handleModal('edit')} searchTerm={searchTerm} />
-			<ModalForm isOpen={isOpen} 
+			<TableList onOpen={handleModal} searchTerm={searchTerm} />
+			<ModalForm key={clientData?.id || "add"}
+			isOpen={isOpen} 
 			onClose={() => setisOpen(false)} 
 			onSubmit={handleSubmit} 
-			mode={modalMode} />
+			mode={modalMode} 
+			clientData={clientData}
+			/>
 		</>
 	);
 }

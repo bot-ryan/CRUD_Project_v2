@@ -1,7 +1,17 @@
 import { useEffect, useState } from "react";
 
+const ModalForm = ({ isOpen, onClose, onSubmit, mode, clientData }) => {
+  const [name, setName] = useState(mode === "edit" ? clientData?.name : "");
+  const [job, setJob] = useState(mode === "edit" ? clientData?.job : "");
+  const [salary, setSalary] = useState(
+    mode === "edit" ? clientData?.salary : "",
+  );
+  const [status, setStatus] = useState(
+    mode === "edit" ? (clientData?.isactive ? "Active" : "Inactive") : "",
+  );
 
-const ModalForm = ({ isOpen, onClose, onSubmit, mode }) => {
+  
+
   // Listen for ESC key
   useEffect(() => {
     const handleEsc = (e) => {
@@ -16,14 +26,16 @@ const ModalForm = ({ isOpen, onClose, onSubmit, mode }) => {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [isOpen, onClose]);
 
-  const[name,setName] = useState("");
-  const[job,setJob] = useState("");
-  const[salary,setSalary] = useState("");
-  const[status,setStatus] = useState("");
-
-
-
-  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const clientData = { name, job, salary: Number(salary), isactive: status === "Active" };
+      await onSubmit(clientData);
+    } catch (err) {
+      console.error("Error submitting form:", err);
+    }
+    onClose();
+  };
 
   return (
     <>
@@ -43,53 +55,47 @@ const ModalForm = ({ isOpen, onClose, onSubmit, mode }) => {
             {mode === "add" ? "Add New Client" : "Edit Client"}
           </h3>
           <p className="py-4">
-            {mode === "add" ? (
-              <fieldset className="fieldset">
-                <legend className="fieldset-legend">Name</legend>
-                <input
-                  type="text"
-                  className="input"
-                  placeholder="John Doe"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <legend className="fieldset-legend">Job</legend>
-                <input
-                  type="text"
-                  className="input"
-                  placeholder="Teacher"
-                  value={job}
-                  onChange={(e) => setJob(e.target.value)}
-                />
-                <legend className="fieldset-legend">Salary</legend>
-                <input
-                  type="number"
-                  className="input"
-                  placeholder="10000"
-                  value={salary}
-                  onChange={(e) => setSalary(e.target.value)}
-                />
-                <p className="label">Optional</p>
-                <legend className="fieldset-legend">Status</legend>
-                <select className="select w-full" value={status} onChange={(e) => setStatus(e.target.value)}>
-                  <option disabled value="" selected>
-                    Select status
-                  </option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
-              </fieldset>
-            ) : (
-              "Edit the client's information below."
-            )}
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Name</legend>
+              <input
+                type="text"
+                className="input"
+                placeholder="John Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <legend className="fieldset-legend">Job</legend>
+              <input
+                type="text"
+                className="input"
+                placeholder="Teacher"
+                value={job}
+                onChange={(e) => setJob(e.target.value)}
+              />
+              <legend className="fieldset-legend">Salary</legend>
+              <input
+                type="number"
+                className="input"
+                placeholder="10000"
+                value={salary}
+                onChange={(e) => setSalary(e.target.value)}
+              />
+              <p className="label">Optional</p>
+              <legend className="fieldset-legend">Status</legend>
+              <select
+                className="select w-full"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option disabled value="" selected>
+                  Select status
+                </option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </fieldset>
           </p>
-          <button
-            className="btn"
-            onClick={() => {
-              onSubmit({ name, job, salary, status: status === "Active" });
-              onClose();
-            }}
-          >
+          <button className="btn" onClick={(e) => handleSubmit(e)}>
             {mode === "add" ? "Add Client" : "Save Changes"}
           </button>
         </div>
