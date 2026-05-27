@@ -20,3 +20,19 @@ export const createClient = async (req, res) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };
+
+export const updateClient = async (req, res) => {
+	try{
+		const clientId = req.params.id;
+		const clientData = req.body;
+		const updatedClient = await clientService.updateClient(clientId, clientData);
+		if(!updatedClient){
+			return res.status(404).json({ error: "Client not found" });
+		}
+		res.status(200).json(updatedClient);
+	} catch(err){
+		console.error("Error updating client:", err);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+};
+
