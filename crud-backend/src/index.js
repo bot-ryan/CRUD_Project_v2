@@ -11,6 +11,11 @@ app.use("/api", clientRoute);
 
 const port = 3000;
 
+// Add this test route
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
 app.listen(port, () => {
 	console.log(`Server is running on http://localhost:${port}`);
 });

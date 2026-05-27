@@ -1,7 +1,11 @@
-import pg from 'pg';
-import env from 'dotenv'; //best practice to use env variables for db credentials
+import pkg from 'pg';
+import dotenv from 'dotenv';
 
-const db = new pgClient({
+dotenv.config(); // ← loads .env variables into process.env
+
+const { Client } = pkg;
+
+const db = new Client({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
     database: process.env.DB_NAME,
