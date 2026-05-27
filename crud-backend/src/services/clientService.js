@@ -26,3 +26,11 @@ export const updateClient = async (clientId, clientData) => {
 export const deleteClient = async (clientId) => {
 	await query('DELETE FROM clients_tb WHERE id=$1', [clientId]);
 };
+
+export const searchClients = async (searchTerm) => {
+	const { rows } = await query(
+		'SELECT * FROM clients_tb WHERE name ILIKE $1 OR job ILIKE $1',
+		[`%${searchTerm}%`]
+	);
+	return rows;
+};
