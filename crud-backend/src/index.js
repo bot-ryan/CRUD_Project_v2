@@ -11,7 +11,6 @@ app.use("/api", clientRoute);
 
 const port = 3000;
 
-// Add this test route
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
